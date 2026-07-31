@@ -1,0 +1,57 @@
+name: Create Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag name to create (for example: v1.0.1). Leave blank to use the version from build.gradle.kts.'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  create-tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine tag name
+        id: tag
+        shell: bash
+        run: |
+          if [ -n "${{ github.event.inputs.tag }}" ]; then
+            tag="${{ github.event.inputs.tag }}"
+          else
+            version=$(grep -E '^[[:space:]]*version[[:space:]]*=' build.gradle.kts | head -n 1 | sed -E 's/.*version[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/')
+            if [ -z "$version" ]; then
+              echo "Unable to determine version from build.gradle.kts" >&2
+              exit 1
+            fi
+            tag="v${version}"
+          fi
+
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Create and push tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          tag="${{ steps.tag.outputs.tag }}"
+
+          if git rev-parse "$tag" >/dev/null 2>&1; then
+            echo "Tag $tag already exists" >&2
+            exit 1
+          fi
+
+          git tag "$tag"
+          git push origin "$tag"
