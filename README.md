@@ -19,6 +19,7 @@
 
 | 指令 | 权限 | 说明 |
 |------|------|------|
+| `/lms` | `letmesee.use` | 查看准星正对的容器（最多 10 格） |
 | `/lms <世界> <X> <Y> <Z>` | `letmesee.use` | 只读打开指定坐标的容器 |
 
 ## 权限
@@ -68,7 +69,7 @@
 
 ## 工作原理
 
-1. 玩家输入 `/lms world x y z`
+1. 玩家输入 `/lms` 时，插件读取玩家准星正对的方块；也可以继续输入 `/lms world x y z`
 2. 使用 `Bukkit.getRegionScheduler().run()` 在目标坐标区域线程获取方块状态
 3. 将容器内容复制到由 `ReadOnlyHolder` 标记的虚拟库存中
 4. 打开玩家只读视图，`InventoryListener` 拦截所有点击/拖拽事件

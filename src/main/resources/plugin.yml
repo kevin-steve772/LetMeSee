@@ -7,7 +7,7 @@ folia-supported: true
 commands:
   lms:
     description: "只读查看任意容器的物品"
-    usage: "/lms <世界> <X> <Y> <Z>"
+    usage: "/lms [世界 X Y Z]"
     permission: "letmesee.use"
 
 permissions:
