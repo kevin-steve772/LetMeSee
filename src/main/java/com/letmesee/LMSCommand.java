@@ -16,6 +16,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class LMSCommand implements CommandExecutor {
 
+    private static final int MAX_TARGET_DISTANCE = 10;
+
     private final JavaPlugin plugin;
 
     public LMSCommand(JavaPlugin plugin) {
@@ -31,6 +33,17 @@ public class LMSCommand implements CommandExecutor {
 
         if (!player.hasPermission("letmesee.use")) {
             player.sendMessage("§c你没有权限使用此命令");
+            return true;
+        }
+
+        if (args.length == 0) {
+            Block targetBlock = player.getTargetBlockExact(MAX_TARGET_DISTANCE);
+            if (targetBlock == null) {
+                player.sendMessage("§c请将准星对准一个容器（最大距离 " + MAX_TARGET_DISTANCE + " 格）");
+                return true;
+            }
+
+            openContainer(player, targetBlock);
             return true;
         }
 
@@ -56,6 +69,13 @@ public class LMSCommand implements CommandExecutor {
         }
 
         Location targetLocation = new Location(world, x, y, z);
+
+        openContainer(player, targetLocation.getBlock());
+        return true;
+    }
+
+    private void openContainer(Player player, Block targetBlock) {
+        Location targetLocation = targetBlock.getLocation();
 
         // 在目标区域线程执行块操作 (Folia兼容)
         Bukkit.getRegionScheduler().run(plugin, targetLocation, task -> {
@@ -92,8 +112,6 @@ public class LMSCommand implements CommandExecutor {
             player.openInventory(viewInv);
             player.sendMessage("§a已打开 " + containerName + " 的只读视图");
         });
-
-        return true;
     }
 
     private String getContainerDisplayName(Block block) {

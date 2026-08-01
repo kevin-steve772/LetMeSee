@@ -1,5 +1,5 @@
 name: "letmesee"
-version: "1.0.0"
+version: "1.0.1"
 main: "com.letmesee.LetMeSee"
 api-version: "1.20"
 folia-supported: true
@@ -7,7 +7,7 @@ folia-supported: true
 commands:
   lms:
     description: "只读查看任意容器的物品"
-    usage: "/lms <世界> <X> <Y> <Z>"
+    usage: "/lms [世界 X Y Z]"
     permission: "letmesee.use"
 
 permissions:
