@@ -51,7 +51,7 @@
 ./gradlew build
 ```
 
-编译产物位于 `build/libs/letmesee-1.0.0.jar`
+编译产物位于 `build/libs/letmesee-1.0.1.jar`
 
 ### GitHub Actions
 
