@@ -1,7 +1,8 @@
 .gradle/
 build/
 !build/libs/*.jar
-gradle/wrapper/gradle-wrapper.jar
+# Keep the Gradle wrapper jar tracked so GitHub Actions can run the wrapper.
+gradle/wrapper/*.jar
 .gradle/
 *.iml
 .idea/
