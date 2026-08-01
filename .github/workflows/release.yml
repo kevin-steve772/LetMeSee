@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -29,7 +30,7 @@ jobs:
           gradle-version: '8.10'
 
       - name: Build plugin
-        run: gradle clean build --no-daemon
+        run: ./gradlew clean build --no-daemon
 
       - name: Discover built jar
         id: artifact
