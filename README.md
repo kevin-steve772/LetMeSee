@@ -53,6 +53,12 @@
 
 编译产物位于 `build/libs/letmesee-1.0.0.jar`
 
+### GitHub Actions
+
+- 推送代码或创建 Pull Request 时，`Build` workflow 会自动构建检查
+- 手动运行 `Create Tag` workflow 创建 `v*` 标签后，`Release` workflow 会自动构建并发布 GitHub Release
+- Release 构建使用 GitHub Actions 提供的 Gradle 8.10，不依赖本地 Gradle Wrapper
+
 ### 手动编译（无需 Gradle）
 
 项目包含 `build.ps1` PowerShell 脚本，可自动下载依赖并编译：
